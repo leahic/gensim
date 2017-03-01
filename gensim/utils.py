@@ -27,6 +27,7 @@ import re
 import unicodedata
 import os
 import random
+import datetime
 import itertools
 import tempfile
 from functools import wraps  # for `synchronous` function lock
@@ -1177,3 +1178,15 @@ def sample_dict(d, n=10, use_random=True):
      """
      selected_keys = random.sample(list(d), min(len(d), n)) if use_random else itertools.islice(iterkeys(d), n)
      return [(key, d[key]) for key in selected_keys]
+
+
+def date_transfer(time_str):
+    try:
+        if time_str.split()[0].find('/') >= 0:
+            return datetime.datetime.strptime(time_str, '%Y/%m/%d %H:%M:%S')
+        elif time_str.split()[0].find('-') >= 0:
+            return datetime.datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
+        elif time_str.split()[0].find('.') >= 0:
+            return datetime.datetime.strptime(time_str, '%Y.%m.%d %H:%M:%S')
+    except:
+        return datetime.datetime.now()
